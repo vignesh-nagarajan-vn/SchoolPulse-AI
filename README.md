@@ -1,7 +1,4 @@
 # Aqualert-AI
-Aqualert AI is an acoustic edge-AI device that listens to school plumbing and detects leaks in toilets, sinks, showers, and pipes before they burst, cutting wasted water and surprise bills. A binary audio classifier runs on a Raspberry Pi Zero with a sound sensor, instantly alerting staff to leaks.
-
-
 **Aqualert AI:** An acoustic edge AI tool that reduces a school’s water consumption by detecting signs of water leakage before they occur.
 - **Problem:** Schools quietly lose massive amounts of water (and subsequently money) due to leakages in restrooms, toilets, sinks, showers, etc. Nobody notices the leaks because the pipes are hidden behind school walls, and the school only finds out after either the pipe completely bursts or when they receive an expensive water bill at the month. 
 - **Solution:** An acoustic edge AI device attached to the toilet, sink, shower and main bathroom supply pipes, so that it can detect leakages based on how the flow of water sounds. When the AI detects a leak it sends an alert to the school, informing them of the potential leak. The school can then send a custodian to look and see if the leak is legit and immediately hire a plumber to come fix it before the leak causes a massive problem.
