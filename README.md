@@ -1,31 +1,21 @@
-<div align="center">
+# SchoolPrint
 
-# Aqualert-AI
+## About
 
-**An acoustic edge AI tool that reduces a school's water consumption by detecting signs of water leakage before they occur.**
+This repo is the SchoolPrint project, the umbrella for the SchoolPulse concept built for USAII Global AI Hackathon 2026, High School Challenge 2, Direction B: My School's Hidden Footprint.
 
-</div>
+See `context/README.md` for the project brief, Google Doc synthesis, email summary, and challenge notes.
 
----
+The broader system is a suite of AI tools that help a school reduce its water, energy, and food consumption. It consists of three independent edge AI tools connected by a web dashboard, which visualizes how each tool is helping reduce consumption levels for the school as a whole.
 
-## Problem
+This project is open sourced under the MIT license.
 
-Schools quietly lose massive amounts of water (and subsequently money) due to leakages in restrooms, toilets, sinks, showers, etc. Nobody notices the leaks because the pipes are hidden behind school walls, and the school only finds out after either the pipe completely bursts or when they receive an expensive water bill at the month.
+## System Overview
 
-## Solution
+- **Aqualert AI (water):** Aqualert AI is an acoustic edge-AI device that listens to school plumbing and detects leaks in toilets, sinks, showers, and pipes before they burst, cutting wasted water and surprise bills. A binary audio classifier runs on a Raspberry Pi Zero with a sound sensor, instantly alerting staff to leaks.
 
-An acoustic edge AI device attached to the toilet, sink, shower and main bathroom supply pipes, so that it can detect leakages based on how the flow of water sounds. When the AI detects a leak it sends an alert to the school, informing them of the potential leak. The school can then send a custodian to look and see if the leak is legit and immediately hire a plumber to come fix it before the leak causes a massive problem.
+- **Compost AI (food):** Compost AI is an AI smart bin that uses computer vision to sort waste into garbage, recycling, or compost at the point of disposal, keeping contaminated loads out of landfills and routing food scraps to composting. A CNN runs on a Raspberry Pi 4 with a camera and servo motors, while a connected app logs each sorted item with its confidence level and alerts staff when a bin is full.
 
-### Software
+- **Energy Consumption Edge AI Tool (energy):** An edge-AI tool to reduce the school's energy consumption. Scope and approach to be defined.
 
-A binary classifier that can take an audio stream as input and determine if it's a normal water pipe or a leaking water pipe.
-
-### Hardware
-
-Raspberry Pi 0 to run model inference + sound sensor module to take in audio input from the pipes + water level sensor to assess the severity of the leak.
-
-## Hackathon Context
-
-This repo is the Aqualert AI / LeakListener water module for the broader SchoolPulse concept in USAII Global AI Hackathon 2026, High School Challenge 2, Direction B: My School's Hidden Footprint.
-
-See [`context/README.md`](context/README.md) for the project brief, Google Doc synthesis, email summary, and challenge notes.
+- **School Pulse (dashboard):** School Pulse is the web dashboard that unifies data from all three edge-AI tools, surfacing leak alerts with a live map of the school's pipe system, compost bin status with a sortable item database that flags low-confidence sorts, and energy metrics, so the school can see its overall footprint in one place.
