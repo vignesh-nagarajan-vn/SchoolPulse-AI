@@ -23,3 +23,9 @@ A binary classifier that can take an audio stream as input and determine if it's
 ### Hardware
 
 Raspberry Pi 0 to run model inference + sound sensor module to take in audio input from the pipes + water level sensor to assess the severity of the leak.
+
+## Hackathon Context
+
+This repo is the Aqualert AI / LeakListener water module for the broader SchoolPulse concept in USAII Global AI Hackathon 2026, High School Challenge 2, Direction B: My School's Hidden Footprint.
+
+See [`context/README.md`](context/README.md) for the project brief, Google Doc synthesis, email summary, and challenge notes.
