@@ -1,4 +1,4 @@
-# Aqualert — Edge Leak Detector
+# Aqualert AI — Edge Leak Detector
 
 Aqualert is a small edge-AI device that watches a tank-type toilet and flags a
 **running / leaking toilet** (worn flapper or fill valve that won't fully seat)
