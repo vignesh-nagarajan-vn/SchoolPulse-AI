@@ -16,6 +16,6 @@ This project is open sourced under the MIT license.
 
 - **Compost AI (food):** Compost AI is an AI smart bin that uses computer vision to sort waste into garbage, recycling, or compost at the point of disposal, keeping contaminated loads out of landfills and routing food scraps to composting. A CNN runs on a Raspberry Pi 4 with a camera and servo motors, while a connected app logs each sorted item with its confidence level and alerts staff when a bin is full.
 
-- **Energy Consumption Edge AI Tool (energy):** An edge-AI tool to reduce the school's energy consumption. Scope and approach to be defined.
+- **Pulse Agent AI / ScheduleGhost (energy + operations):** A software-heavy backend agent that reads school schedules, event history, utility-style energy logs, water alerts, and Compost AI outputs to detect after-hours energy waste, forecast event needs, retrieve project context with RAG, and turn findings into human-checkable action cards. See `pulse-agent-ai/`.
 
 - **School Pulse (dashboard):** School Pulse is the web dashboard that unifies data from all three edge-AI tools, surfacing leak alerts with a live map of the school's pipe system, compost bin status with a sortable item database that flags low-confidence sorts, and energy metrics, so the school can see its overall footprint in one place.

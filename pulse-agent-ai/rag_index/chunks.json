@@ -1,0 +1,142 @@
+[
+  {
+    "title": "Readme",
+    "source": "README.md",
+    "text": "# SchoolPrint AI\n\n## About\n\nThis repo is the SchoolPrint AI project, the umbrella for the SchoolPulse concept built for USAII Global AI Hackathon 2026, High School Challenge 2, Direction B: My School's Hidden Footprint.\n\nSee `context/README.md` for the project brief, Google Doc synthesis, email summary, and challenge notes.\n\nThe broader system is a suite of AI tools that help a school reduce its water, energy, and food consumption. It consists of three independent edge AI tools connected by a web dashboard, which visualizes how each tool is helping reduce consumption levels for the school as a whole."
+  },
+  {
+    "title": "Readme",
+    "source": "README.md",
+    "text": "This project is open sourced under the MIT license.\n\n## System Overview\n\n- **Aqualert AI (water):** Aqualert AI is an acoustic edge-AI device that listens to school plumbing and detects leaks in toilets, sinks, showers, and pipes before they burst, cutting wasted water and surprise bills. A binary audio classifier runs on a Raspberry Pi Zero with a sound sensor, instantly alerting staff to leaks.\n\n- **Compost AI (food):** Compost AI is an AI smart bin that uses computer vision to sort waste into garbage, recycling, or compost at the point of disposal, keeping contaminated loads out of landfills and routing food scraps to composting. A CNN runs on a Raspberry Pi 4 with a camera and servo motors, while a connected app logs each sorted item with its confidence level and alerts staff when a bin is full."
+  },
+  {
+    "title": "Readme",
+    "source": "README.md",
+    "text": "- **Pulse Agent AI / ScheduleGhost (energy + operations):** A software-heavy backend agent that reads school schedules, event history, utility-style energy logs, water alerts, and Compost AI outputs to detect after-hours energy waste, forecast event needs, retrieve project context with RAG, and turn findings into human-checkable action cards. See `pulse-agent-ai/`.\n\n- **School Pulse (dashboard):** School Pulse is the web dashboard that unifies data from all three edge-AI tools, surfacing leak alerts with a live map of the school's pipe system, compost bin status with a sortable item database that flags low-confidence sorts, and energy metrics, so the school can see its overall footprint in one place."
+  },
+  {
+    "title": "Readme",
+    "source": "context/README.md",
+    "text": "# Project Context\n\nThis repo is for SchoolPrint AI, the umbrella project for the broader SchoolPulse hackathon concept.\n\n## Current Direction\n\n- Hackathon: USAII Global AI Hackathon 2026.\n- Track: High School, Challenge 2, Direction B: My School's Hidden Footprint.\n- Core idea: a suite of edge AI tools that reveal hidden school resource waste across water, food, and energy, tied together by a dashboard.\n- Product name in the current README: SchoolPrint AI.\n- Product name from the ideation doc: SchoolPulse.\n- Current repo scope: the full school hidden-footprint system, with Aqualert AI as the most developed water module."
+  },
+  {
+    "title": "Readme",
+    "source": "context/README.md",
+    "text": "## Why This Fits The Brief\n\nChallenge 2 asks for an AI-powered MVP that helps a school understand environmental impact and take practical, measurable action. Direction B specifically asks teams to make hidden school footprint patterns visible, show how specific behaviors affect outcomes, and help users prioritize high-impact actions.\n\nSchoolPrint AI fits because it turns hidden water, food, and energy waste into local, measurable alerts: where the problem is, why the AI thinks it matters, estimated impact, confidence, and what a human should check next.\n\n## System Concept\n\n- Pipe Listener / Aqualert AI: contact microphone or sound sensor on pipes, audio/vibration classifier, leak anomaly alerts.\n- Compost AI / BinGuard / LunchLens: camera-based classifier for compost, recycling, landfill, unopened food, and cafeteria waste patterns.\n- Energy module options: Cold Chain Node for freezers, Room Ghost Node for empty-room HVAC/lights, or Power Sniffer Node for phantom loads.\n- SchoolPulse dashboard: incident cards, school footprint map, confidence, environmental impact, recommended action, and status.\n- Voice agent: optional assistant for facilities/cafeteria staff to ask what to fix first or log a resolved issue."
+  },
+  {
+    "title": "Readme",
+    "source": "context/README.md",
+    "text": "## Judging Lens To Optimize For\n\n- Problem understanding: 30%. Make it local and specific to the school, not generic sustainability.\n- AI reasoning: 20%. Show classification, anomaly detection, prediction, or recommendations.\n- Solution design: 20%. Make the input -> AI -> insight -> action flow obvious.\n- Impact and insight: 20%. Estimate water/food/energy saved and show behavior change.\n- Responsible AI: 10%. Include risk, mitigation, and human-in-the-loop review.\n\n## Public Evidence Already In Repo\n\n- `context/evidence/Parentsquare Screenshot 1.png`: BASIS Phoenix school closure due to a water main break affecting campus operations.\n- `context/evidence/Parentsquare Screenshot 2.png`: BASIS Phoenix notice about very low water pressure from a water main break."
+  },
+  {
+    "title": "Readme",
+    "source": "context/README.md",
+    "text": "These are strong local examples for the Aqualert AI problem framing.\n\n## Private Notes\n\nDetailed email-derived information, including the qualifier code, is stored locally under `info/private/` and is intentionally gitignored because this repository is public."
+  },
+  {
+    "title": "Readme",
+    "source": "context/briefs/README.md",
+    "text": "# Challenge Brief Notes\n\nKept file:\n\n- `Challenge_Brief_2_HS_Climate_Action.pdf`\n\nThis is the correct brief for the project because the chosen direction is Challenge 2, Direction B: My School's Hidden Footprint.\n\n## Brief Summary\n\n- Build window: June 14-21, 2026.\n- Team size: 2-5 students.\n- Format: fully virtual and global.\n- Mission: build an AI-powered MVP that helps a school, community group, or local organization understand environmental impact and take practical action.\n- Direction B: help a school understand and visualize how everyday choices contribute to environmental impact.\n- Examples named in the brief: energy use, water use, trash and recycling patterns, transportation habits, and food consumption."
+  },
+  {
+    "title": "Readme",
+    "source": "context/briefs/README.md",
+    "text": "## What A Strong Solution Needs\n\n- Specific local context.\n- Environmental impact that is visible and understandable.\n- AI pattern detection, prediction, recommendation, or anomaly detection.\n- Clear realistic action, not just awareness.\n- A clear input -> AI -> insight -> action flow.\n- At least one responsible AI safeguard.\n\n## Submission Requirements To Remember\n\n- Qualifier approval code.\n- Project description.\n- Track and challenge selection.\n- AI architecture explanation.\n- Human-in-the-loop design.\n- Responsible AI guardrail.\n- Tools used.\n- Data disclosure.\n- 3-5 minute pitch video.\n- Working demo, walkthrough, interactive mockup, simulation, or decision-support prototype."
+  },
+  {
+    "title": "Google Doc Final Idea",
+    "source": "context/source-notes/google-doc-final-idea.md",
+    "text": "# Google Doc Context: Final Hackathon Idea\n\nSource reviewed: the shared Google Doc tab named `Final Hackathon Idea`.\n\n## Final Chosen Direction\n\nChallenge 2, Direction B: My School's Hidden Footprint.\n\nThe doc frames the project as a suite of AI tools that help a school reduce water consumption, energy consumption, and food consumption. The three independent edge AI tools connect into one dashboard that visualizes how each tool reduces school-wide consumption.\n\n## Aqualert AI / LeakListener\n\nProblem: schools lose water and money from hidden restroom, toilet, sink, shower, and pipe leaks. Staff often notice only after a pipe bursts or an expensive water bill arrives."
+  },
+  {
+    "title": "Google Doc Final Idea",
+    "source": "context/source-notes/google-doc-final-idea.md",
+    "text": "Solution: an acoustic edge AI device attaches to toilet, sink, shower, and main bathroom supply pipes. It detects potential leaks from water-flow sound patterns and alerts the school so a custodian can verify and call a plumber early.\n\nSoftware: binary audio classifier for normal pipe sounds vs. leaking pipe sounds.\n\nHardware: Raspberry Pi Zero, sound sensor module or contact microphone, water level sensor, and optional ultrasonic sensor.\n\nKey pitch angle: \"Your school's pipes are screaming. Nobody's listening.\" A leak has a sustained high-frequency hiss or continuous vibration that differs from normal burst-and-stop water use."
+  },
+  {
+    "title": "Google Doc Final Idea",
+    "source": "context/source-notes/google-doc-final-idea.md",
+    "text": "## Compost AI / BinGuard / LunchLens\n\nProblem: food waste goes uneaten and often enters landfills instead of composting. Compost streams can be rejected when contaminated by plastic, glass, or other non-compostable items.\n\nSolution: smart bin or cafeteria scanner using computer vision to classify items as garbage, recycling, compost, unopened food, food scraps, or contaminants. The system can alert when a bin is full and flag low-confidence classifications for human review.\n\nSoftware: CNN or object detector for waste/food categories.\n\nHardware: Raspberry Pi 4, camera module, ultrasonic fullness sensor, three-bin container, and servo motors."
+  },
+  {
+    "title": "Google Doc Final Idea",
+    "source": "context/source-notes/google-doc-final-idea.md",
+    "text": "## Energy Tool Options\n\nThe doc leaves the energy module open but suggests several strong directions:\n\n- Cold Chain Node: freezer/fridge temperature, door, compressor vibration, humidity, and optional power draw to detect spoilage risk and energy waste.\n- Room Ghost Node: occupancy, light, temperature, humidity, sound, and optional CO2 sensors to detect lights or HVAC running in empty rooms.\n- Power Sniffer Node: current clamp or smart plug to detect phantom loads from projectors, smartboards, vending machines, printers, cafeteria warmers, or lab equipment.\n\nBest MVP: physically build 2-3 modules and simulate the rest in the dashboard. Recommended physical modules are Pipe Listener, Cold Chain Node, and LunchLens/BinGuard."
+  },
+  {
+    "title": "Google Doc Final Idea",
+    "source": "context/source-notes/google-doc-final-idea.md",
+    "text": "## Dashboard: SchoolPulse\n\nDashboard concept: Hidden Footprint Map.\n\nEach incident card should show:\n\n- What happened.\n- Where it happened.\n- Why the AI thinks it happened.\n- Environmental impact.\n- Confidence.\n- Recommended fix.\n- Status: open, confirmed, or resolved.\n\nExample water incident:\n\n- Water Ghost detected.\n- Location: B-Wing Bathroom.\n- Pattern: continuous pipe vibration for 37 minutes.\n- Likely cause: stuck faucet or toilet.\n- Confidence: 91%.\n- Action: check sink 2 or toilet 3.\n\n## AI Architecture From The Doc\n\nUse narrow models instead of one giant model:"
+  },
+  {
+    "title": "Google Doc Final Idea",
+    "source": "context/source-notes/google-doc-final-idea.md",
+    "text": "- Time-series anomaly model for freezer temperature drift, power spikes, HVAC ghost patterns, and water-flow anomalies.\n- Audio/vibration classifier for pipe leaks, faucets, toilets, compressor vibration, and equipment hum.\n- Vision classifier for tray waste, bin contamination, share table safety, plastic/recycling detection, and food categories.\n- Small LLM or action agent that converts structured alerts into school-friendly language.\n- Voice intent classifier that turns staff replies into incident status updates.\n\n## Demo Story\n\n1. Show baseline dashboard: all systems normal.\n2. Trigger or simulate pipe leak: dashboard shows Water Ghost Detected in B-Wing Bathroom.\n3. Trigger or simulate freezer issue: dashboard shows Cold Chain Anomaly and food spoilage risk.\n4. Scan cafeteria waste: dashboard shows Food Waste Spike and possible share-table rescue.\n5. Ask the voice agent what to fix first. It prioritizes the freezer first, then the bathroom leak."
+  },
+  {
+    "title": "Google Doc Final Idea",
+    "source": "context/source-notes/google-doc-final-idea.md",
+    "text": "## Best Name And Pitch\n\nPreferred name: SchoolPulse.\n\nSubtitle: Edge AI hardware for detecting a school's hidden water, energy, and food footprint.\n\nPolished pitch: SchoolPulse is a modular edge AI sensor network that reveals hidden school-building waste. Low-cost Raspberry Pi and ESP32 nodes attach to pipes, freezers, rooms, bins, and cafeteria stations to detect silent waste. The dashboard turns anomalies into action cards for students, cafeteria workers, and facilities staff so schools know what to fix first."
+  },
+  {
+    "title": "Repo Understanding",
+    "source": "context/source-notes/repo-understanding.md",
+    "text": "# Repo Understanding\n\n## Current Repo State\n\nThe repository currently contains:\n\n- `README.md`: Aqualert AI problem, solution, software, and hardware summary.\n- `context/evidence/Parentsquare Screenshot 1.png`: local evidence of school closure after a water main break.\n- `context/evidence/Parentsquare Screenshot 2.png`: local evidence of low water pressure and operational disruption after a water main break.\n- `LICENSE`.\n\n## Role Of This Repo\n\nThis repo is now best treated as the SchoolPrint AI umbrella repo for the broader SchoolPulse system.\n\nThe current README summarizes the water, food, energy, and dashboard pieces. The Aqualert AI / LeakListener module remains the most developed concrete module. The next likely development work is to add:"
+  },
+  {
+    "title": "Repo Understanding",
+    "source": "context/source-notes/repo-understanding.md",
+    "text": "- Sample or synthetic audio clips.\n- Audio feature extraction.\n- Binary classifier or anomaly detector.\n- Edge inference plan for Raspberry Pi Zero.\n- Alert payload schema for the SchoolPulse dashboard.\n- Demo flow using the ParentSquare screenshots in `context/evidence/` as local problem proof.\n\n## Useful MVP Shape\n\nFor the hackathon, a practical version could include:\n\n- Recorded or synthetic normal-flow and leak-flow audio.\n- A simple classifier or anomaly detector that outputs normal vs. leak.\n- A severity estimate based on duration, confidence, and water-level/flow proxy data.\n- A dashboard event such as `Water Ghost Detected`.\n- A human verification step before any repair/work-order action."
+  },
+  {
+    "title": "Readme",
+    "source": "context/evidence/README.md",
+    "text": "# Evidence\n\nThis folder stores local evidence that supports the hackathon problem framing.\n\n- `Parentsquare Screenshot 1.png`: BASIS Phoenix school closure after a water main break affected campus operations.\n- `Parentsquare Screenshot 2.png`: BASIS Phoenix low-water-pressure notice after a water main break.\n\nThese screenshots support the Aqualert AI / LeakListener module by showing that school water infrastructure failures can disrupt a real campus, not just waste water in the abstract."
+  },
+  {
+    "title": "Email Summary",
+    "source": "info/email-summary.md",
+    "text": "# USAII Hackathon Email Summary\n\nThis file is a public-safe summary of the relevant Gmail findings. Private details such as qualifier code, score/rank, team member emails, and tracked email URLs are kept locally in `info/private/email-details.md`, which is gitignored.\n\n## Important Timeline\n\n- June 5, 2026: Welcome email for USAII Global AI Hackathon 2026. Key dates: hackathon June 14-21, submissions due June 21. Required Discord participation and Devpost/resources links were provided.\n- June 6, 2026: Devpost registration reminder. All 2-5 team members needed to register. Qualifier opened June 7 at 10:00 AM ET and closed June 10 at 11:59 PM ET.\n- June 7, 2026: AI Thinking Readiness Qualifier opened. It covered problem framing, AI approach, responsible AI, and human oversight.\n- June 7, 2026: Under-18 parental consent form reminder.\n- June 8, 2026: Team-finding form shared.\n- June 8, 2026: AI Builder Speaker Series announced with sessions on AI architecture, responsible AI, pitching, and real-world AI systems.\n- June 10, 2026: Final qualifier reminder. Results were expected by June 12 at 6:00 PM ET.\n- June 12-13, 2026: Team BASIS Brownies qualified for the High School track. Private qualifier details are stored only in the gitignored private note.\n- June 14, 2026: Kickoff and challenge reveal. Build phase started.\n- June 14, 2026: Challenge briefs shared. The selected project uses `Challenge_Brief_2_HS_Climate_Action.pdf`.\n- June 14, 2026: Kickoff presentation links shared. Raw download from the email links was blocked with HTTP 403 in this environment, so the links are preserved in private notes.\n- June 14, 2026: Mentor Moment Day 1 asked teams to identify what happens if their AI tool gives a wrong answer and how to catch it.\n- June 15, 2026: Opening ceremony recording shared on YouTube.\n- June 15, 2026: Kickoff Q&A document shared. Raw download from the email link was blocked with HTTP 403 in this environment.\n- June 15, 2026: Mentor Moment Day 2 emphasized sharp problem statements before coding.\n- June 15, 2026: Google Doc `USAII Hackathon Ideation` was shared.\n- June 15/16, 2026: GitHub collaboration invite arrived for `vignesh-nagarajan-vn/Aqualert-AI`."
+  },
+  {
+    "title": "Email Summary",
+    "source": "info/email-summary.md",
+    "text": "## Key Action Notes\n\n- Final submission deadline: June 21, 2026 at 11:59 PM ET / EDT as stated in emails.\n- Mentors are available June 14-21 through Discord challenge channels and mentor requests.\n- The pitch should clearly cover the problem/user, how the AI works, walkthrough/demo, and responsible AI choice.\n- The solution should avoid being just data visualization; it needs an AI reasoning layer.\n- Human oversight matters. Aqualert AI should alert and explain, but a custodian should verify before repair decisions.\n\n## Files From Email\n\nGmail reported no direct attachments for the relevant messages. The emails linked to challenge briefs, kickoff slides, kickoff PDF, and Q&A docx. The local Challenge 2 PDF from Downloads has been copied into `context/briefs/`."
+  },
+  {
+    "title": "Architecture",
+    "source": "pulse-agent-ai/docs/architecture.md",
+    "text": "# Pulse Agent AI Architecture\n\nPulse Agent AI is the backend intelligence layer for SchoolPrint AI.\n\n```text\nProject docs + challenge brief + email notes + ParentSquare evidence\nSynthetic logs + future real logs\nUtility/event/waste/water data\n        |\n        v\nSQLite operational database\n        |\n        +--> Energy anomaly model\n        +--> Event food/energy planning model\n        +--> Waste and water rule summaries\n        |\n        v\nRAG retriever over project context and research sources\n        |\n        v\nGemma 4 or CPU fallback Pulse Agent\n        |\n        v\nAction cards + API responses + voice/chat answer\n```\n\n## Backend Responsibilities"
+  },
+  {
+    "title": "Architecture",
+    "source": "pulse-agent-ai/docs/architecture.md",
+    "text": "- Store school footprint logs in one schema.\n- Detect energy waste from schedule, event, weather, expected load, and actual load.\n- Forecast event needs from past event outcomes.\n- Retrieve challenge/project context before the agent answers.\n- Convert data into simple action cards for the dashboard.\n- Keep every important recommendation human-verifiable.\n\n## Voice Agent\n\nThe voice layer should be thin:\n\n```text\nspeech-to-text\n-> POST /api/agent/query\n-> RAG + analytics + Gemma response\n-> text-to-speech\n```\n\nFor the MVP, browser speech recognition or Whisper can produce the transcript. The backend only needs text. Later, Gemma 4 audio input can be tested directly on Lambda, but text-in/text-out is easier to demo reliably."
+  },
+  {
+    "title": "Architecture",
+    "source": "pulse-agent-ai/docs/architecture.md",
+    "text": "## Why This Is Better Than A Dashboard Alone\n\nThe dashboard shows the result. Pulse Agent AI creates the result:\n\n- It retrieves the right context.\n- It reasons over live logs.\n- It ranks what matters most.\n- It explains uncertainty.\n- It creates the human-check step."
+  },
+  {
+    "title": "Data Strategy",
+    "source": "pulse-agent-ai/docs/data_strategy.md",
+    "text": "# Data Strategy\n\n## Data Used Now\n\nThe MVP uses synthetic data with realistic school constraints:\n\n- Hourly energy readings by zone.\n- Event schedules and outcomes.\n- Water leak alerts.\n- Waste and compost logs.\n- Event transportation plans.\n\nSynthetic data is generated by `scripts/generate_synthetic_data.py`.\n\n## Real Data Sources Researched\n\n- ENERGY STAR K-12 Schools: problem framing for school energy waste.\n- NASEO/EIA school energy breakdown: HVAC, cooling, lighting, and ventilation assumptions.\n- Building Data Genome 2: real hourly non-residential meter data for forecasting and anomaly benchmarking.\n- OEDI Secondary School reference building: school-specific energy simulation assumptions.\n- NREL ComStock: end-use commercial building load profiles.\n- DOE Green Button: future real utility bill/interval data ingestion.\n- WWF/EPA school food waste resources: food waste baselines and measurement impact.\n- EPA WaterSense: water leak impact context."
+  },
+  {
+    "title": "Data Strategy",
+    "source": "pulse-agent-ai/docs/data_strategy.md",
+    "text": "Research source metadata lives in `data/raw/research_sources.json`.\n\n## How Synthetic Data Maps To The Real Product\n\n| Synthetic table | Future real version |\n| --- | --- |\n| `energy_logs.csv` | utility interval data, Green Button exports, BAS/HVAC schedule exports |\n| `event_plans.csv` | school calendar, event forms, cafeteria orders, after-event reports |\n| `water_alerts.csv` | Aqualert edge-device alerts |\n| `waste_logs.csv` | Compost AI classifications and human review corrections |\n| `transport_plans.csv` | event traffic notes, attendance estimates, pickup plans |\n\n## Training Data Plan\n\n1. Start with synthetic data for demo and model wiring.\n2. Add public BDG2 samples for energy forecasting benchmarks.\n3. Add manually entered real school utility bills or Green Button data if available.\n4. After each school event, log predicted vs actual attendance, food waste, energy use, and cleanup notes.\n5. Retrain the event planning model once enough local event history exists."
+  },
+  {
+    "title": "Data Strategy",
+    "source": "pulse-agent-ai/docs/data_strategy.md",
+    "text": "## Responsible Data Rules\n\n- Do not store student names or individual student routes.\n- Aggregate event attendance and transportation patterns.\n- Keep utility/customer data opt-in.\n- Keep human approval for all physical actions.\n- Let the agent cite retrieved context instead of inventing claims."
+  },
+  {
+    "title": "Research Sources",
+    "source": "pulse-agent-ai/data/raw/research_sources.json",
+    "text": "[\n  {\n    \"name\": \"ENERGY STAR K-12 Schools\",\n    \"url\": \"https://www.energystar.gov/buildings/resources-audience/k-12-schools\",\n    \"type\": \"problem statistic\",\n    \"key_points\": [\n      \"K-12 school districts spend more than $8 billion per year on energy.\",\n      \"More than 30 percent of school energy use can be waste.\",\n      \"Low-cost measures can save around 10 percent.\"\n    ],\n    \"how_pulse_agent_uses_it\": \"Frames the energy module around waste detection and low-cost operational action rather than expensive hardware.\"\n  },\n  {\n    \"name\": \"NASEO Energy Efficient and Healthy K-12 Public School Facilities\",\n    \"url\": \"https://www.naseo.org/data/sites/1/documents/publications/NASEO_EnergyEfficientSchools_v4_Digital_Final.pdf\",\n    \"type\": \"school energy end-use breakdown\",\n    \"key_points\": [\n      \"Space heating is the largest education-sector end use.\",\n      \"Cooling, lighting, and ventilation are major controllable loads.\"\n    ],\n    \"how_pulse_agent_uses_it\": \"Shapes ScheduleGhost energy features around schedule, weather, occupancy, lights, HVAC, and event runtime.\"\n  },\n  {\n    \"name\": \"Building Data Genome Project 2\",\n    \"url\": \"https://github.com/buds-lab/building-data-genome-project-2\",\n    \"type\": \"real hourly building meter dataset\",\n    \"key_points\": [\n      \"Open dataset with hourly non-residential meter readings.\",\n      \"Useful for forecasting, anomaly detection, benchmarking, and building energy analysis.\"\n    ],\n    \"how_pulse_agent_uses_it\": \"Provides a real-data source for future energy model benchmarking. The repo includes a fetch script for a small sample.\"\n  },\n  {\n    \"name\": \"OEDI Commercial Reference Building: Secondary School\",\n    \"url\": \"https://data.openei.org/submissions/165\",\n    \"type\": \"school reference building dataset\",\n    \"key_points\": [\n      \"Secondary school reference models are available across climate zones and building vintages.\",\n      \"Useful for school-specific energy simulation assumptions.\"\n    ],\n    \"how_pulse_agent_uses_it\": \"Supports realistic synthetic baselines for school energy consumption when real school utility data is unavailable.\"\n  },\n  {\n    \"name\": \"NREL ComStock Public Datasets\",\n    \"url\": \"https://comstock.nlr.gov/page/datasets\",\n    \"type\": \"commercial building load profiles\",\n    \"key_points\": [\n      \"ComStock describes timeseries and annual commercial building energy use at end-use level.\",\n      \"Can be filtered for school-like commercial building profiles.\"\n    ],\n    \"how_pulse_agent_uses_it\": \"Future source for stronger energy baselines and end-use explanations.\"\n  },\n  {\n    \"name\": \"DOE Green Button\",\n    \"url\": \"https://www.energy.gov/data/green-button\",\n    \"type\": \"real utility data ingestion pathway\",\n    \"key_points\": [\n      \"Customers can download and share utility usage data by choice.\",\n      \"Useful for future real school bill or interval-data import.\"\n    ],\n    \"how_pulse_agent_uses_it\": \"Defines the privacy-safe route for bringing real utility data into the backend later.\"\n  },\n  {\n    \"name\": \"WWF Food Waste Warriors Fact Sheet\",\n    \"url\": \"https://files.worldwildlife.org/wwfcmsprod/files/Publication/file/611b23d66z_2025_FWW_Fact_Sheet_250822.pdf\",\n    \"type\": \"school food waste statistic\",\n    \"key_points\": [\n      \"Average school food waste can be around 39 pounds per student per year.\",\n      \"Food waste measurement programs can reduce waste.\"\n    ],\n    \"how_pulse_agent_uses_it\": \"Supports the waste/event module and connects Compost AI logs to event planning.\"\n  },\n  {\n    \"name\": \"EPA WaterSense Statistics and Facts\",\n    \"url\": \"https://www.epa.gov/watersense/statistics-and-facts\",\n    \"type\": \"water leak impact context\",\n    \"key_points\": [\n      \"Leaks can waste large volumes of water before anyone notices.\",\n      \"Early detection makes leak alerts environmentally and financially meaningful.\"\n    ],\n    \"how_pulse_agent_uses_it\": \"Supports Aqualert/LeakListener alert framing and water impact estimates.\"\n  }\n]"
+  }
+]

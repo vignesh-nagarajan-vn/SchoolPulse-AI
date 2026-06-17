@@ -1,0 +1,84 @@
+[
+  {
+    "name": "ENERGY STAR K-12 Schools",
+    "url": "https://www.energystar.gov/buildings/resources-audience/k-12-schools",
+    "type": "problem statistic",
+    "key_points": [
+      "K-12 school districts spend more than $8 billion per year on energy.",
+      "More than 30 percent of school energy use can be waste.",
+      "Low-cost measures can save around 10 percent."
+    ],
+    "how_pulse_agent_uses_it": "Frames the energy module around waste detection and low-cost operational action rather than expensive hardware."
+  },
+  {
+    "name": "NASEO Energy Efficient and Healthy K-12 Public School Facilities",
+    "url": "https://www.naseo.org/data/sites/1/documents/publications/NASEO_EnergyEfficientSchools_v4_Digital_Final.pdf",
+    "type": "school energy end-use breakdown",
+    "key_points": [
+      "Space heating is the largest education-sector end use.",
+      "Cooling, lighting, and ventilation are major controllable loads."
+    ],
+    "how_pulse_agent_uses_it": "Shapes ScheduleGhost energy features around schedule, weather, occupancy, lights, HVAC, and event runtime."
+  },
+  {
+    "name": "Building Data Genome Project 2",
+    "url": "https://github.com/buds-lab/building-data-genome-project-2",
+    "type": "real hourly building meter dataset",
+    "key_points": [
+      "Open dataset with hourly non-residential meter readings.",
+      "Useful for forecasting, anomaly detection, benchmarking, and building energy analysis."
+    ],
+    "how_pulse_agent_uses_it": "Provides a real-data source for future energy model benchmarking. The repo includes a fetch script for a small sample."
+  },
+  {
+    "name": "OEDI Commercial Reference Building: Secondary School",
+    "url": "https://data.openei.org/submissions/165",
+    "type": "school reference building dataset",
+    "key_points": [
+      "Secondary school reference models are available across climate zones and building vintages.",
+      "Useful for school-specific energy simulation assumptions."
+    ],
+    "how_pulse_agent_uses_it": "Supports realistic synthetic baselines for school energy consumption when real school utility data is unavailable."
+  },
+  {
+    "name": "NREL ComStock Public Datasets",
+    "url": "https://comstock.nlr.gov/page/datasets",
+    "type": "commercial building load profiles",
+    "key_points": [
+      "ComStock describes timeseries and annual commercial building energy use at end-use level.",
+      "Can be filtered for school-like commercial building profiles."
+    ],
+    "how_pulse_agent_uses_it": "Future source for stronger energy baselines and end-use explanations."
+  },
+  {
+    "name": "DOE Green Button",
+    "url": "https://www.energy.gov/data/green-button",
+    "type": "real utility data ingestion pathway",
+    "key_points": [
+      "Customers can download and share utility usage data by choice.",
+      "Useful for future real school bill or interval-data import."
+    ],
+    "how_pulse_agent_uses_it": "Defines the privacy-safe route for bringing real utility data into the backend later."
+  },
+  {
+    "name": "WWF Food Waste Warriors Fact Sheet",
+    "url": "https://files.worldwildlife.org/wwfcmsprod/files/Publication/file/611b23d66z_2025_FWW_Fact_Sheet_250822.pdf",
+    "type": "school food waste statistic",
+    "key_points": [
+      "Average school food waste can be around 39 pounds per student per year.",
+      "Food waste measurement programs can reduce waste."
+    ],
+    "how_pulse_agent_uses_it": "Supports the waste/event module and connects Compost AI logs to event planning."
+  },
+  {
+    "name": "EPA WaterSense Statistics and Facts",
+    "url": "https://www.epa.gov/watersense/statistics-and-facts",
+    "type": "water leak impact context",
+    "key_points": [
+      "Leaks can waste large volumes of water before anyone notices.",
+      "Early detection makes leak alerts environmentally and financially meaningful."
+    ],
+    "how_pulse_agent_uses_it": "Supports Aqualert/LeakListener alert framing and water impact estimates."
+  }
+]
+

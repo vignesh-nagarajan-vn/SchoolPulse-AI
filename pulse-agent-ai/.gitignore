@@ -1,0 +1,10 @@
+.venv/
+.venv-gemma/
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# Runtime rebuildable artifacts. CSV samples and trained demo models are intentionally kept.
+data/processed/*.db
+data/processed/*.sqlite
+

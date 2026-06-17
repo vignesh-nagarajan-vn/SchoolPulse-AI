@@ -1,0 +1,41 @@
+event_id,expected_attendance,gates_used,pickup_window_min,idle_risk,recommendation
+EVT-036,214,front loop + north lot,29,0.314,standard pickup plan is enough
+EVT-010,211,front loop + north lot,20,0.278,standard pickup plan is enough
+EVT-013,197,front loop + north lot,17,0.376,standard pickup plan is enough
+EVT-038,177,front loop + north lot,21,0.323,standard pickup plan is enough
+EVT-031,188,front loop + north lot,22,0.332,standard pickup plan is enough
+EVT-019,267,front loop + north lot,32,0.478,standard pickup plan is enough
+EVT-022,78,front loop,15,0.129,standard pickup plan is enough
+EVT-034,160,front loop + north lot,16,0.326,standard pickup plan is enough
+EVT-001,222,front loop + north lot,35,0.405,standard pickup plan is enough
+EVT-021,139,front loop,15,0.238,standard pickup plan is enough
+EVT-017,209,front loop + north lot,26,0.281,standard pickup plan is enough
+EVT-026,249,front loop + north lot,41,0.323,standard pickup plan is enough
+EVT-020,153,front loop,15,0.197,standard pickup plan is enough
+EVT-011,128,front loop,30,0.146,standard pickup plan is enough
+EVT-032,152,front loop,18,0.203,standard pickup plan is enough
+EVT-035,150,front loop,15,0.391,standard pickup plan is enough
+EVT-037,201,front loop + north lot,19,0.461,standard pickup plan is enough
+EVT-007,102,front loop,15,0.212,standard pickup plan is enough
+EVT-018,147,front loop,22,0.326,standard pickup plan is enough
+EVT-008,160,front loop + north lot,18,0.397,standard pickup plan is enough
+EVT-005,200,front loop + north lot,27,0.45,standard pickup plan is enough
+EVT-009,133,front loop,15,0.248,standard pickup plan is enough
+EVT-004,226,front loop + north lot,25,0.289,standard pickup plan is enough
+EVT-029,111,front loop,15,0.324,standard pickup plan is enough
+EVT-014,196,front loop + north lot,17,0.322,standard pickup plan is enough
+EVT-024,125,front loop,15,0.332,standard pickup plan is enough
+EVT-028,210,front loop + north lot,16,0.275,standard pickup plan is enough
+EVT-016,118,front loop,23,0.17,standard pickup plan is enough
+EVT-030,207,front loop + north lot,27,0.348,standard pickup plan is enough
+EVT-040,80,front loop,15,0.11,standard pickup plan is enough
+EVT-027,187,front loop + north lot,26,0.446,standard pickup plan is enough
+EVT-006,132,front loop,15,0.182,standard pickup plan is enough
+EVT-002,309,front loop + north lot,38,0.413,standard pickup plan is enough
+EVT-015,170,front loop + north lot,16,0.239,standard pickup plan is enough
+EVT-033,205,front loop + north lot,29,0.403,standard pickup plan is enough
+EVT-023,173,front loop + north lot,15,0.345,standard pickup plan is enough
+EVT-003,314,front loop + north lot,29,0.506,standard pickup plan is enough
+EVT-025,176,front loop + north lot,24,0.203,standard pickup plan is enough
+EVT-039,163,front loop + north lot,15,0.273,standard pickup plan is enough
+EVT-012,90,front loop,15,0.12,standard pickup plan is enough

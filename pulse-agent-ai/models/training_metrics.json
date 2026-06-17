@@ -1,0 +1,17 @@
+{
+  "evaluation_note": "Metrics are for synthetic MVP wiring only. Real school or BDG2 data should be used before claiming real-world accuracy.",
+  "energy_waste_classifier": {
+    "model": "RandomForestClassifier",
+    "rows": 16632,
+    "positive_rate": 0.00968013468013468,
+    "accuracy": 1.0,
+    "precision": 1.0,
+    "recall": 1.0,
+    "f1": 1.0
+  },
+  "event_servings_regressor": {
+    "model": "RandomForestRegressor",
+    "rows": 40,
+    "mae_servings": 32.460347222222225
+  }
+}
