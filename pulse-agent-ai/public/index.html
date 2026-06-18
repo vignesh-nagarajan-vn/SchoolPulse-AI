@@ -219,6 +219,42 @@
         "fr-FR": "French"
       };
 
+      const answerSectionLabels = [
+        "Highest priority",
+        "Most important next action",
+        "Why",
+        "Details",
+        "Next step",
+        "Human check",
+        "Human verification required",
+        "Evidence",
+        "Estimated impact",
+        "Confidence",
+        "Prioridad máxima",
+        "Por qué",
+        "Siguiente paso",
+        "Verificación humana",
+        "Evidencia",
+        "Impacto estimado",
+        "Confianza",
+        "सबसे ज़रूरी काम",
+        "क्यों",
+        "अगला कदम",
+        "मानवीय जांच",
+        "最高优先级",
+        "原因",
+        "下一步",
+        "人工确认",
+        "الأولوية الأعلى",
+        "السبب",
+        "الخطوة التالية",
+        "تحقق بشري",
+        "Priorité principale",
+        "Pourquoi",
+        "Prochaine étape",
+        "Vérification humaine"
+      ];
+
       function selectedLanguage() {
         return document.getElementById("language").value || "en-US";
       }
@@ -299,16 +335,34 @@
           }
 
           closeList();
-          const labeled = line.match(/^(Highest priority|Most important next action|Why|Details|Next step|Human check|Human verification required|Evidence|Estimated impact|Confidence)\s*:\s*(.*)$/i);
+          const labeled = parseLabeledLine(line);
           if (labeled) {
-            html.push(`<h4>${escapeHtml(labeled[1])}</h4>`);
-            if (labeled[2]) html.push(`<p>${escapeHtml(labeled[2])}</p>`);
+            html.push(`<h4>${escapeHtml(labeled.label)}</h4>`);
+            if (labeled.rest) html.push(`<p>${escapeHtml(labeled.rest)}</p>`);
           } else {
             html.push(`<p>${escapeHtml(line)}</p>`);
           }
         });
         closeList();
         return html.join("");
+      }
+
+      function parseLabeledLine(line) {
+        const normalized = line.replace(/\s+/g, " ").trim();
+        const folded = normalized.toLocaleLowerCase();
+        for (const label of answerSectionLabels) {
+          const labelFolded = label.toLocaleLowerCase();
+          if (folded === labelFolded) {
+            return {label, rest: ""};
+          }
+          if (folded.startsWith(`${labelFolded}:`)) {
+            return {
+              label: normalized.slice(0, label.length),
+              rest: normalized.slice(label.length + 1).trim()
+            };
+          }
+        }
+        return null;
       }
 
       function setTranscript(query, answerText, kickerText) {

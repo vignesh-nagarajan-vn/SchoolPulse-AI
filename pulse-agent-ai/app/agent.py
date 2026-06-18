@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import re
 from typing import Any
 
 import requests
@@ -27,6 +28,57 @@ LANGUAGE_NAMES = {
     "zh-CN": "Simplified Chinese",
     "ar": "Arabic",
     "fr-FR": "French",
+}
+
+
+SECTION_LABELS = {
+    "en-US": {
+        "priority": "Highest priority",
+        "why": "Why",
+        "next": "Next step",
+        "human": "Human check",
+    },
+    "es-US": {
+        "priority": "Prioridad máxima",
+        "why": "Por qué",
+        "next": "Siguiente paso",
+        "human": "Verificación humana",
+    },
+    "hi-IN": {
+        "priority": "सबसे ज़रूरी काम",
+        "why": "क्यों",
+        "next": "अगला कदम",
+        "human": "मानवीय जांच",
+    },
+    "zh-CN": {
+        "priority": "最高优先级",
+        "why": "原因",
+        "next": "下一步",
+        "human": "人工确认",
+    },
+    "ar": {
+        "priority": "الأولوية الأعلى",
+        "why": "السبب",
+        "next": "الخطوة التالية",
+        "human": "تحقق بشري",
+    },
+    "fr-FR": {
+        "priority": "Priorité principale",
+        "why": "Pourquoi",
+        "next": "Prochaine étape",
+        "human": "Vérification humaine",
+    },
+}
+
+
+LABEL_ALIASES = {
+    "highest priority": "priority",
+    "most important next action": "priority",
+    "why": "why",
+    "details": "why",
+    "next step": "next",
+    "human check": "human",
+    "human verification required": "human",
 }
 
 
@@ -67,6 +119,8 @@ class PulseAgent:
             return None
 
         language_name = LANGUAGE_NAMES.get(language, "English")
+        labels = self._section_labels(language)
+        label_list = ", ".join(labels.values())
         context = "\n\n".join(
             f"[{item['title']} | {item['source']}]\n{item['text']}" for item in retrieved
         )
@@ -82,7 +136,8 @@ class PulseAgent:
                         f"Current analytics JSON:\n{json.dumps(overview, indent=2)}\n\n"
                         f"Answer in {language_name}. "
                         "Give a concise answer and name the most important next action. "
-                        "Format with these plain labels only: Highest priority, Why, Next step, Human check. "
+                        f"Format with these plain {language_name} labels only: {label_list}. "
+                        "If English is not selected, do not use English section labels. "
                         "Do not use Markdown, bullets with asterisks, code fences, or raw JSON."
                     ),
                 },
@@ -103,7 +158,8 @@ class PulseAgent:
             )
             response.raise_for_status()
             data = response.json()
-            return data["choices"][0]["message"]["content"].strip()
+            answer = data["choices"][0]["message"]["content"].strip()
+            return self._localize_section_labels(answer, language)
         except Exception:
             return None
 
@@ -129,3 +185,33 @@ class PulseAgent:
             "I do not have enough logs yet to rank a real action. "
             "Load synthetic or real data, rebuild the RAG index, and ask again."
         )
+
+    def _section_labels(self, language: str) -> dict[str, str]:
+        return SECTION_LABELS.get(language, SECTION_LABELS["en-US"])
+
+    def _localize_section_labels(self, answer: str, language: str) -> str:
+        labels = self._section_labels(language)
+        if labels == SECTION_LABELS["en-US"]:
+            return answer
+
+        localized_lines: list[str] = []
+        pattern = re.compile(
+            r"^(Highest priority|Most important next action|Why|Details|Next step|Human check|Human verification required)\s*:?\s*(.*)$",
+            re.IGNORECASE,
+        )
+        for line in answer.splitlines():
+            match = pattern.match(line.strip())
+            if not match:
+                localized_lines.append(line)
+                continue
+
+            key = LABEL_ALIASES.get(match.group(1).lower())
+            if not key:
+                localized_lines.append(line)
+                continue
+
+            suffix = match.group(2).strip()
+            localized = labels[key]
+            localized_lines.append(f"{localized}: {suffix}" if suffix else localized)
+
+        return "\n".join(localized_lines).strip()
