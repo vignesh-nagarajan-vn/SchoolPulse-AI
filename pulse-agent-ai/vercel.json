@@ -3,8 +3,20 @@
   "framework": null,
   "rewrites": [
     {
+      "source": "/api/:path*",
+      "destination": "https://mls-shaw-stack-folding.trycloudflare.com/api/:path*"
+    },
+    {
+      "source": "/docs",
+      "destination": "https://mls-shaw-stack-folding.trycloudflare.com/docs"
+    },
+    {
+      "source": "/openapi.json",
+      "destination": "https://mls-shaw-stack-folding.trycloudflare.com/openapi.json"
+    },
+    {
       "source": "/(.*)",
-      "destination": "/app.py"
+      "destination": "/index.html"
     }
   ]
 }

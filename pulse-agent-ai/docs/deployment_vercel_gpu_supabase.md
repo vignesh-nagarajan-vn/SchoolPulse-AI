@@ -4,12 +4,28 @@
 
 ```text
 Browser dashboard on Vercel
-  -> FastAPI endpoints on Vercel
-  -> OpenAI-compatible Gemma endpoint on the A100
+  -> Vercel rewrites /api/* to the A100 public tunnel
+  -> FastAPI + RAG + analytics on the A100
+  -> OpenAI-compatible Gemma/vLLM on the same A100
   -> Supabase for durable logs and synced school context
 ```
 
-Vercel should deploy from the `pulse-agent-ai` directory. The GPU should run vLLM. Supabase stores agent runs, operational logs, and source documents. Google Sheets can be used as a staff-editable operational log surface.
+Vercel should deploy from the `pulse-agent-ai` directory. The GPU should run both the FastAPI backend and vLLM. Supabase stores agent runs, operational logs, and source documents. Google Sheets can be used as a staff-editable operational log surface.
+
+For the current demo, the A100 API is exposed through a temporary Cloudflare quick tunnel because direct traffic to `129.153.110.167:8010` is blocked by the cloud firewall:
+
+```text
+https://mls-shaw-stack-folding.trycloudflare.com
+```
+
+If the A100 is restarted or the tunnel process stops, start a new tunnel and update `vercel.json` with the new URL. The more stable option is to open inbound TCP port `8010` in the Lambda firewall/security settings and change `vercel.json` back to `http://129.153.110.167:8010`.
+
+Tunnel restart command on the A100:
+
+```bash
+cd ~/SchoolPrint-AI/pulse-agent-ai
+bash scripts/start_api_tunnel.sh
+```
 
 ## Vercel
 
@@ -22,12 +38,8 @@ pulse-agent-ai
 Environment variables:
 
 ```bash
-DATABASE_PATH=/tmp/schoolprint_ai.db
-RAG_INDEX_PATH=rag_index/index.joblib
-LLM_BASE_URL=http://129.153.110.167:8000/v1
-LLM_MODEL=google/gemma-4-12B-it
-LLM_API_KEY=<same secret passed to vLLM --api-key>
-ALLOWED_ORIGINS=*
+# No Python runtime env is required for the static Vercel dashboard.
+# API traffic is proxied to the A100 in vercel.json.
 ```
 
 Deploy:
