@@ -1,0 +1,36 @@
+{
+  "school_name": "SchoolPulse Demo High School",
+  "electricity_rate_usd_per_kwh": 0.162,
+  "rate_note": "Blended commercial rate from last 12 utility bills.",
+  "zones": {
+    "Gym": {
+      "active_kwh_per_hour": 14.2,
+      "idle_kwh_per_hour": 3.1,
+      "active_note": "Main court lights, scoreboard, bleacher area HVAC, and locker-room load while a game or practice is running."
+    },
+    "Auditorium": {
+      "active_kwh_per_hour": 11.5,
+      "idle_kwh_per_hour": 2.4
+    },
+    "Cafeteria": {
+      "active_kwh_per_hour": 12.6,
+      "idle_kwh_per_hour": 3.4
+    }
+  },
+  "activities": {
+    "volleyball": {
+      "zone": "Gym",
+      "current_days_per_week": 1,
+      "gym_hours_per_session": 3.5,
+      "season_weeks": 10,
+      "session_note": "Each match night runs warmups, two matches, and teardown -- about 3.5 hours of full gym load."
+    },
+    "basketball": {
+      "zone": "Gym",
+      "current_days_per_week": 2,
+      "gym_hours_per_session": 3.0,
+      "season_weeks": 12,
+      "session_note": "Practice plus game runs about 3 hours of full gym load."
+    }
+  }
+}
