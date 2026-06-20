@@ -79,6 +79,10 @@ class Detector:
             self._window.popleft()
 
     def _fault(self, now: datetime) -> Detection:
+        # A sensor fault breaks observation continuity; the sustained-trend
+        # counter must restart so a post-fault recovery window can't inherit
+        # a stale streak and prematurely escalate to LEAK_SUSPECTED.
+        self._occupied_leak_streak = 0
         return Detection(
             timestamp=now,
             state=DetectionState.SENSOR_FAULT,

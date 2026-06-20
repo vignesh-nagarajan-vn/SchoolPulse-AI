@@ -170,7 +170,7 @@ Each message has a `msg_id`. The device persists every message to a local SQLite
 |------|-----------|
 | **False alarm** annoys staff, erodes trust | Conservative two-sided gate (flag only when the *upper* slope-CI bound clears the threshold); daytime trends must sustain across 3 windows; every alert ships its confidence + CI |
 | **Missed leak** wastes water | Weak-but-real declines are surfaced as `WATCH`, never dropped; refill evidence corroborates the slope |
-| **Acting on a broken sensor** | Insufficient or invalid echoes return `SENSOR_FAULT` — a value is never fabricated; turbulence is skipped, not guessed |
+| **Acting on a broken sensor** | Insufficient or invalid echoes return `SENSOR_FAULT` — a value is never fabricated; turbulence is skipped, not guessed. A sensor fault also resets the occupied-hours sustained-trend counter so a post-fault recovery window cannot inherit a stale streak and prematurely escalate to `LEAK_SUSPECTED`. |
 | **Over-automation** | The device is **advisory only**. It never closes a valve or shuts off water. A human reviews alerts and decides. |
 | **Privacy / overreach** | It measures only tank water level — no audio, no images, no occupancy tracking |
 | **Credential leakage** | Secrets come from environment variables only; none are stored in code or config |

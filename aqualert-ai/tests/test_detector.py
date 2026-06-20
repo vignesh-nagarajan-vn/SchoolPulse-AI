@@ -6,7 +6,7 @@ import numpy as np
 
 from aqualert.detector import Detector
 from aqualert.measurement import MeasurementEngine
-from aqualert.models import DetectionState
+from aqualert.models import DetectionState, Measurement, MeasurementStatus
 from aqualert.sensor import VirtualClock, build_sensor
 
 
@@ -93,3 +93,16 @@ def test_idle_more_confident_than_occupied(cfg):
     idle, _ = _run(cfg, "leak_fast", start_hour=23, start_min=30)
     occ, _ = _run(cfg, "leak_fast", start_hour=12, start_min=0)
     assert idle.confidence >= occ.confidence
+
+
+def test_sensor_fault_resets_occupied_streak(cfg):
+    # A sensor fault mid-streak must reset the counter so the post-fault
+    # window can't inherit stale evidence and prematurely reach LEAK_SUSPECTED.
+    det = Detector(cfg)
+    det._occupied_leak_streak = 2  # one window short of the escalation threshold
+
+    fault_m = Measurement(timestamp=datetime.now(), status=MeasurementStatus.SENSOR_FAULT)
+    result = det.update(fault_m)
+
+    assert result.state is DetectionState.SENSOR_FAULT
+    assert det._occupied_leak_streak == 0
