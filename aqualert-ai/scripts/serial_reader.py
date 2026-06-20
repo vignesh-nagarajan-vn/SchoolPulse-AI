@@ -12,6 +12,7 @@ Run on any device that has the Arduino plugged in:
 
 from __future__ import annotations
 
+import json
 import os
 import re
 import sys
@@ -19,6 +20,7 @@ import time
 import uuid
 import signal
 import logging
+from typing import Any
 
 import requests
 import serial
@@ -37,7 +39,7 @@ load_dotenv(Path(__file__).parent / ".env")
 VERCEL_INGEST_URL: str = os.getenv("VERCEL_INGEST_URL", "")
 INGEST_SECRET: str    = os.getenv("INGEST_SECRET", "")
 SERIAL_PORT: str      = os.getenv("SERIAL_PORT", "")
-BAUD_RATE: int        = int(os.getenv("BAUD_RATE", "9600"))
+BAUD_RATE: int        = int(os.getenv("BAUD_RATE", "115200"))
 DEVICE_ID: str        = os.getenv("DEVICE_ID", "aqualert-1")
 PUSH_INTERVAL: float  = float(os.getenv("PUSH_INTERVAL", "1.0"))
 
@@ -92,6 +94,40 @@ def auto_detect_port() -> str | None:
 # Matches the first decimal/integer number in a line, e.g.:
 #   "23.5", "Distance: 23.5 cm", "level=23.50", "d=017", "-1.2"
 _NUMBER_RE = re.compile(r"[-+]?\d+(?:\.\d+)?")
+_STRUCTURED_KEYS = (
+    "arduino_sequence",
+    "uptime_ms",
+    "distance_cm",
+    "fill_depth_cm",
+    "tank_depth_cm",
+    "fill_percent",
+    "status",
+    "confidence",
+    "sample_count",
+    "spread_cm",
+)
+
+
+def _as_float(value: object) -> float | None:
+    if value is None or isinstance(value, bool):
+        return None
+    try:
+        return float(value)
+    except (TypeError, ValueError):
+        return None
+
+
+def parse_json_payload(line: str) -> dict[str, Any] | None:
+    """Parse a JSON serial line from the current Arduino sketch."""
+    if not line.startswith("{"):
+        return None
+    try:
+        payload = json.loads(line)
+    except json.JSONDecodeError:
+        return None
+    if not isinstance(payload, dict):
+        return None
+    return payload
 
 
 def parse_value(line: str) -> float | None:
@@ -112,24 +148,71 @@ def parse_value(line: str) -> float | None:
     return None
 
 
+def build_payload(raw_line: str) -> dict[str, Any] | None:
+    """Convert either structured JSON or plain-text serial output into one ingest payload."""
+    line = raw_line.strip()
+    if not line:
+        return None
+
+    serial_payload = parse_json_payload(line)
+    if serial_payload is not None:
+        value = _as_float(serial_payload.get("value"))
+        if value is None:
+            value = _as_float(serial_payload.get("distance_cm"))
+        if value is None:
+            return None
+
+        payload: dict[str, Any] = {
+            "msg_id": str(uuid.uuid4()),
+            "device_id": str(serial_payload.get("device_id") or DEVICE_ID),
+            "ts": datetime.now(timezone.utc).isoformat(),
+            "value": value,
+            "raw": line,
+        }
+        for key in _STRUCTURED_KEYS:
+            if key in serial_payload:
+                payload[key] = serial_payload[key]
+        return payload
+
+    value = parse_value(line)
+    if value is None:
+        return None
+    return {
+        "msg_id": str(uuid.uuid4()),
+        "device_id": DEVICE_ID,
+        "ts": datetime.now(timezone.utc).isoformat(),
+        "value": value,
+        "raw": line,
+    }
+
+
+def format_payload(payload: dict[str, Any]) -> str:
+    """Render a short operator-friendly summary for the terminal."""
+    value = _as_float(payload.get("value"))
+    status = payload.get("status")
+    fill_percent = _as_float(payload.get("fill_percent"))
+
+    parts = []
+    if value is not None:
+        parts.append(f"{value:.2f} cm")
+    if status:
+        parts.append(f"status={status}")
+    if fill_percent is not None:
+        parts.append(f"fill={fill_percent:.1f}%")
+    return ", ".join(parts) if parts else "unparsed"
+
+
 # ---------------------------------------------------------------------------
 # Vercel push
 # ---------------------------------------------------------------------------
 
 
-def push_reading(value: float, raw_line: str) -> bool:
+def push_payload(payload: dict[str, Any]) -> bool:
     """POST one reading to the Vercel ingest endpoint. Returns True on success."""
     if not VERCEL_INGEST_URL:
-        log.warning("VERCEL_INGEST_URL not set — skipping push (value=%.2f)", value)
+        log.warning("VERCEL_INGEST_URL not set — skipping push (%s)", format_payload(payload))
         return False
 
-    payload = {
-        "msg_id":    str(uuid.uuid4()),
-        "device_id": DEVICE_ID,
-        "ts":        datetime.now(timezone.utc).isoformat(),
-        "value":     value,
-        "raw":       raw_line.strip(),
-    }
     headers: dict[str, str] = {"Content-Type": "application/json"}
     if INGEST_SECRET:
         headers["x-ingest-secret"] = INGEST_SECRET
@@ -181,7 +264,7 @@ def main() -> None:
 
     ser: serial.Serial | None = None
     last_push = 0.0
-    last_value: float | None = None
+    pending_payload: dict[str, Any] | None = None
     errors = 0
 
     while _running:
@@ -211,23 +294,19 @@ def main() -> None:
             time.sleep(min(errors * 2, 10))
             continue
 
-        value = parse_value(raw)
-        if value is not None:
-            last_value = value
-            # Print every parsed reading
-            print(f"  ← {raw.strip()!r:<32}  →  {value:.2f} cm", end="", flush=True)
+        payload = build_payload(raw)
+        if payload is not None:
+            pending_payload = payload
+            print(f"  ← {raw.strip()!r:<96}  →  {format_payload(payload)}", end="", flush=True)
 
         # --- Push at interval ---
         now = time.time()
-        if last_value is not None and (now - last_push) >= PUSH_INTERVAL:
-            ok = push_reading(
-                last_value,
-                raw.strip() if value is not None else str(last_value),
-            )
+        if pending_payload is not None and (now - last_push) >= PUSH_INTERVAL:
+            ok = push_payload(pending_payload)
             last_push = now
-            if value is not None:
-                print(f"  [{'OK' if ok else 'FAIL'}]", flush=True)
-        elif value is not None:
+            print(f"  [{'OK' if ok else 'FAIL'}]", flush=True)
+            pending_payload = None
+        elif payload is not None:
             print(flush=True)
 
     if ser and ser.is_open:

@@ -8,19 +8,39 @@ const STALE_SECONDS    = 10;     // treat reading as stale if older than this
 
 const ALERT_THRESHOLD  = Number(process.env.NEXT_PUBLIC_ALERT_THRESHOLD ?? 10);
 const WARN_THRESHOLD   = Number(process.env.NEXT_PUBLIC_WARN_THRESHOLD  ?? 20);
+const SENSOR_STATUS_LABELS = {
+  normal: 'NORMAL',
+  low: 'LOW WATER',
+  critical: 'CRITICAL',
+  watch: 'UNSTABLE',
+  sensor_fault: 'SENSOR FAULT',
+};
 
 // ── Status logic ────────────────────────────────────────────────────────────
-function getStatus(value) {
+function getStatus(reading) {
+  const sensorStatus = String(reading?.status ?? '').toLowerCase();
+  if (sensorStatus === 'sensor_fault') return 'fault';
+  if (sensorStatus === 'critical') return 'alert';
+  if (sensorStatus === 'low' || sensorStatus === 'watch') return 'warning';
+  if (sensorStatus === 'normal') return 'normal';
+
+  const value = reading?.value;
   if (value === null || value === undefined) return 'offline';
   if (value <= ALERT_THRESHOLD) return 'alert';
   if (value <= WARN_THRESHOLD)  return 'warning';
   return 'normal';
 }
 
+function getStatusLabel(reading, statusKey) {
+  const sensorStatus = String(reading?.status ?? '').toLowerCase();
+  return SENSOR_STATUS_LABELS[sensorStatus] ?? STATUS_CONFIG[statusKey].label;
+}
+
 const STATUS_CONFIG = {
   normal:  { label: 'NORMAL',        color: 'var(--green)',  bg: 'rgba(74,222,128,0.08)'  },
   warning: { label: 'WARNING',       color: 'var(--yellow)', bg: 'rgba(251,191,36,0.08)'  },
   alert:   { label: 'LEAK DETECTED', color: 'var(--red)',    bg: 'rgba(248,113,113,0.08)' },
+  fault:   { label: 'SENSOR FAULT',  color: 'var(--red)',    bg: 'rgba(248,113,113,0.08)' },
   offline: { label: 'NO DATA',       color: 'var(--muted)',  bg: 'rgba(74,100,128,0.06)'  },
 };
 
@@ -116,9 +136,10 @@ export default function Dashboard() {
     return () => clearInterval(id);
   }, [poll]);
 
-  const value  = latest?.value ?? null;
-  const status = getStatus(value);
+  const value  = latest?.distance_cm ?? latest?.value ?? null;
+  const status = getStatus(latest);
   const sc     = STATUS_CONFIG[status];
+  const statusLabel = getStatusLabel(latest, status);
 
   const isStale = latest?.ts
     ? (Date.now() - new Date(latest.ts).getTime()) > STALE_SECONDS * 1000
@@ -158,7 +179,7 @@ export default function Dashboard() {
             className="status-pill"
             style={{ color: sc.color, background: sc.bg, borderColor: sc.color }}
           >
-            {sc.label}
+            {statusLabel}
           </div>
         </div>
 
@@ -167,9 +188,26 @@ export default function Dashboard() {
           <div className="card-label">Device</div>
           <div className="device-name">{latest?.device_id ?? '—'}</div>
 
+          <div className="card-label" style={{ marginTop: '1rem' }}>Device Status</div>
+          <div className="meta-text">{latest?.status ?? sc.label}</div>
+
           <div className="card-label" style={{ marginTop: '1rem' }}>Last Reading</div>
           <div className="meta-text">
             {latest?.ts ? new Date(latest.ts).toLocaleTimeString() : '—'}
+          </div>
+
+          <div className="card-label" style={{ marginTop: '1rem' }}>Fill Level</div>
+          <div className="meta-text">
+            {latest?.fill_percent !== null && latest?.fill_percent !== undefined
+              ? `${latest.fill_percent.toFixed(1)}%`
+              : '—'}
+          </div>
+
+          <div className="card-label" style={{ marginTop: '1rem' }}>Confidence</div>
+          <div className="meta-text">
+            {latest?.confidence !== null && latest?.confidence !== undefined
+              ? `${(latest.confidence * 100).toFixed(0)}%`
+              : '—'}
           </div>
 
           <div className="card-label" style={{ marginTop: '1rem' }}>Raw Serial Output</div>
@@ -178,6 +216,11 @@ export default function Dashboard() {
           <div className="card-label" style={{ marginTop: '1rem' }}>Dashboard Poll</div>
           <div className="meta-text">
             {lastPoll ? lastPoll.toLocaleTimeString() : '—'}
+          </div>
+
+          <div className="card-label" style={{ marginTop: '1rem' }}>Sample Count / Sequence</div>
+          <div className="meta-text">
+            {latest?.sample_count ?? '—'} / {latest?.arduino_sequence ?? '—'}
           </div>
         </div>
 

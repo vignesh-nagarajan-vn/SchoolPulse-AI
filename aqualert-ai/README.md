@@ -120,6 +120,20 @@ python server/receiver.py --config config.yaml --db telemetry.sqlite
 # (use --no-mqtt to run only the read API)
 ```
 
+**Push live Arduino readings to the Vercel dashboard**:
+
+The repo also includes a lightweight USB-serial bridge for the separate `aqualert-frontend/` Next.js app. The current Arduino UNO sketch prints JSON lines over Serial at `115200` baud, and `scripts/serial_reader.py` forwards those readings to the frontend's `POST /api/ingest` endpoint.
+
+```bash
+pip install -r scripts/requirements.txt
+cp scripts/.env.example scripts/.env
+# set VERCEL_INGEST_URL=https://<your-vercel-app>/api/ingest
+# set INGEST_SECRET to match the Vercel environment variable
+python scripts/serial_reader.py
+```
+
+The Vercel page polls `GET /api/latest` every 2 seconds and renders the newest reading plus recent history from Vercel KV.
+
 **Run the tests:**
 
 ```bash
