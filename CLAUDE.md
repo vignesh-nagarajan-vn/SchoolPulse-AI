@@ -30,6 +30,16 @@ These hold across every module and are the main thing to internalize:
 
 ---
 
+## Prerequisites & Setup
+
+**Python:** 3.9+ (tested on 3.10, 3.11)  
+**Node.js:** 18+ (for Next.js apps)  
+**Optional:** GPU + CUDA for faster TensorFlow training (Compost-AI) or Gemma inference (Pulse Agent)
+
+All modules manage deps independently. Python projects use `requirements.txt`; Next apps use `package.json`. No monorepo tooling. Each venv is isolated and gitignored.
+
+---
+
 ## Pulse Agent AI (`pulse-agent-ai/`)
 
 This is where most active work happens. It is **two apps that talk over `/api/*`**.
@@ -83,6 +93,15 @@ Demo / smoke / full tests:
 python scripts/run_demo.py              # asks a few sample questions end-to-end
 python scripts/run_full_tests.py        # broader backend check
 python scripts/run_gemma_smoke_test.py  # requires a GPU/Lambda LLM endpoint — see docs/gemma_lambda.md
+```
+
+Additional scripts:
+
+```bash
+python scripts/train_models.py          # train/retrain the energy + event detection models (outputs to models/)
+python scripts/fetch_real_energy_sample.py  # fetch sample real energy logs (if data source is configured)
+python scripts/sync_google_sheets.py    # sync analytics to a Google Sheet (requires GOOGLE_SHEETS_ID env var)
+python scripts/sync_supabase_seed.py    # seed Supabase with synthetic data (requires SUPABASE_URL + KEY)
 ```
 
 ### Backend: the Gemma vs. fallback switch
@@ -158,12 +177,119 @@ python -m pytest tests/test_detector.py::test_name # one test
 
 ## Compost AI (`Compost-AI/`)
 
+### The model
+
 The model lives entirely in `Compost-AI/Compost AI (EfficientNetB0 ~96% Accuracy).ipynb`. Pre-trained weights are checked in:
 
 - `Models/efficientnet-b0-weights.keras` — full Keras model
 - `Models/quantized-tflite-weights.tflite` — quantized for Pi 4
 
 To retrain/audit: open the notebook and run all cells (TensorFlow; a GPU helps, CPU works). Inference helpers are in `inference/`; evaluation artifacts in `Results/` and `Audit/`.
+
+### Web app: `Compost-AI/web` (Next.js 14, camera capture)
+
+A standalone Next.js app for real-time waste classification with camera capture and feedback:
+
+```bash
+cd Compost-AI/web
+npm install
+npm run dev          # localhost:3000
+npm run build
+npm run lint
+```
+
+- **Camera capture**: shoots a photo, POSTs it to `/api/classify`
+- **Inference**: the backend calls the `.keras` model (via a Python server or Lambda) and returns class + confidence
+- **Grad-CAM visualization**: highlights what the model focused on
+- **Feedback loop**: logs corrections to Upstash Redis for retraining signals
+
+Requires `NEXT_PUBLIC_INFERENCE_URL` env var pointing to the classification endpoint (e.g., a FastAPI server running the notebook's inference code).
+
+---
+
+## Environment Variables Reference
+
+### Pulse Agent AI
+
+Core:
+- `DATABASE_PATH` — SQLite database path (default: `./data/agent.db`)
+- `RAG_INDEX_PATH` — TF-IDF index path (default: `./rag_index/index.joblib`)
+- `PULSE_API_BASE` — base URL for frontend to reach backend (default: `http://127.0.0.1:8000`)
+
+LLM (Gemma):
+- `LLM_BASE_URL` — OpenAI-compatible endpoint (e.g., `http://YOUR_GPU_IP:8000/v1`); unset = fallback only
+- `LLM_MODEL` — model ID (e.g., `google/gemma-4-12B-it`)
+- `LLM_API_KEY` — API key (can be `EMPTY` for local endpoints)
+
+Optional features:
+- `GOOGLE_SHEETS_ID` — Google Sheet ID for syncing analytics
+- `SUPABASE_URL` + `SUPABASE_KEY` — Supabase project for data sync
+- `ELEVENLABS_API_KEY` — ElevenLabs for voice output (agent page)
+
+Frontend:
+- `NEXT_PUBLIC_API_BASE` — backend URL visible to browser (default: `http://127.0.0.1:8000`)
+- `NEXT_PUBLIC_FALLBACK_MODE` — force fallback data (set to `true` for offline testing)
+
+### Aqualert AI
+
+Sensor/hardware:
+- `AQUALERT_MQTT_BROKER` — MQTT broker address
+- `AQUALERT_MQTT_TOPIC` — topic to publish detections
+- `AQUALERT_REST_ENDPOINT` — HTTP fallback URL
+- `AQUALERT_SENSOR_MODE` — `simulated` or `real` (config file only)
+
+See `aqualert-ai/config.example.yaml` for the full schema.
+
+### Aqualert Frontend
+
+- `KV_REST_API_URL` — Vercel KV endpoint URL
+- `KV_REST_API_TOKEN` — Vercel KV auth token
+
+### Compost AI Web
+
+- `NEXT_PUBLIC_INFERENCE_URL` — API endpoint for the classification service
+
+---
+
+## Common Development Tasks
+
+**Running the full stack locally:**
+
+```bash
+# Terminal 1: Python backend
+cd pulse-agent-ai
+source .venv/bin/activate  # .venv\Scripts\activate on Windows
+uvicorn app.main:app --reload --port 8000
+
+# Terminal 2: Next.js dashboard
+cd pulse-agent-ai/web
+npm run dev  # starts on :3000, proxies /api/* → :8000
+```
+
+**Testing a single module in isolation:**
+
+- Pulse agent: `python scripts/run_demo.py` (no frontend needed)
+- Aqualert: `cd aqualert-ai && python -m pytest tests/test_detector.py::test_name`
+- Compost-AI: open the notebook in Jupyter, run cells to validate model changes
+
+**Debugging API calls:**
+
+- Built-in test page: `http://127.0.0.1:8000/` (html + fetch form)
+- OpenAPI docs: `http://127.0.0.1:8000/docs` (Swagger)
+- Frontend network tab: check browser DevTools to see actual `/api/*` calls
+
+**Regenerating fallback data after CSV changes:**
+
+```bash
+cd pulse-agent-ai/web
+npm run gen:fallback  # reads ../data/synthetic/*.csv and creates web/lib/fallback/*.json
+```
+
+**Windows-specific notes:**
+
+- Use `python -m venv .venv` (not `python3`); activate with `.venv\Scripts\activate`
+- Paths use backslashes in PowerShell; wrap in quotes or use forward slashes in Python strings
+- Git hooks (pre-commit, etc.) may need Unix line endings — configure in `.git/config`
 
 ---
 
